@@ -1,7 +1,15 @@
 import { Table, Column, Model, DataType } from 'sequelize-typescript';
 
 @Table
-export class User extends Model {
+export class Student extends Model {
+  @Column({
+    type: DataType.INTEGER,
+    allowNull: false,
+    primaryKey: true,
+    autoIncrement: true,
+  })
+  id: number;
+
   @Column({
     type: DataType.STRING,
     allowNull: false,
@@ -26,18 +34,6 @@ export class User extends Model {
     allowNull: false,
   })
   password: string;
-
-  @Column({
-    type: DataType.BOOLEAN,
-    defaultValue: false,
-  })
-  isAdmin: boolean;
-
-  @Column({
-    type: DataType.BOOLEAN,
-    defaultValue: false,
-  })
-  isTeacher: boolean;
 
   @Column({
     type: DataType.BOOLEAN,
