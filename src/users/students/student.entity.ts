@@ -1,12 +1,12 @@
 import { Table, Column, Model, DataType } from 'sequelize-typescript';
 
-export interface InterfaceStudent {
+/* export interface InterfaceStudent {
   fullName: string;
   cellphone: string;
   email: string;
   password: string;
   enrolledPeriod: 'morning' | 'afternoon' | 'night';
-}
+} */
 
 export enum EnrolledPeriod {
   MORNING = 'morning',

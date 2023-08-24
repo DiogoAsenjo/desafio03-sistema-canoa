@@ -5,20 +5,20 @@ export class CreateStudentDto {
   @IsNotEmpty({ message: 'fullName is mandatory'})
   fullName: string;
 
-  @IsNotEmpty()
+  @IsNotEmpty({ message: 'cellphone is mandatory'})
   @Length(10, 15) // Define o comprimento mínimo e máximo para o número de celular
   cellphone: string;
 
-  @IsNotEmpty()
-  @IsEmail()
+  @IsNotEmpty({ message: 'email is mandatory'})
+  @IsEmail({}, { message: 'email should be validy' })
   email: string;
 
-  @IsNotEmpty()
+  @IsNotEmpty({ message: 'password is mandatory'})
   password: string;
 
-  @IsNotEmpty()
+  @IsNotEmpty({ message: 'enrolledPeriod is mandatory'})
   @IsEnum(EnrolledPeriod, {
-    message: 'O período de inscrição deve ser "morning", "afternoon" ou "night".',
+    message: 'EnrolledPeriodo should be: "morning", "afternoon" ou "night".',
   })
   enrolledPeriod: string;
 }
