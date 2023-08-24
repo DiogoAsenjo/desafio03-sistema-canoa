@@ -14,20 +14,14 @@ export class Student extends Model {
     type: DataType.STRING,
     allowNull: false,
   })
-  firstName: string;
-
-  @Column({
-    type: DataType.STRING,
-    allowNull: false,
-  })
-  lastName: string;
+  fullName: string;
 
   @Column({
     type: DataType.STRING,
     allowNull: false,
     unique: true,
   })
-  email: string;
+  cellphone: string;
 
   @Column({
     type: DataType.STRING,
@@ -35,9 +29,17 @@ export class Student extends Model {
   })
   password: string;
 
+  //Criar uma coluna com o período que o aluno está matriculado. Procurar o tipo enum.
+  /* @Column({
+    type: DataType.BOOLEAN,
+    defaultValue: false,
+  })
+  hasPaidMonthlyFee: boolean; */
+
   @Column({
     type: DataType.BOOLEAN,
     defaultValue: false,
   })
   hasPaidMonthlyFee: boolean;
+  
 }
