@@ -14,13 +14,14 @@ export class Admin extends Model {
     type: DataType.STRING,
     allowNull: false,
   })
-  firstName: string;
+  fullName: string;
 
   @Column({
     type: DataType.STRING,
     allowNull: false,
+    unique: true,
   })
-  lastName: string;
+  cellphone: string;
 
   @Column({
     type: DataType.STRING,

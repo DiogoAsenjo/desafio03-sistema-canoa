@@ -1,5 +1,19 @@
 import { Table, Column, Model, DataType } from 'sequelize-typescript';
 
+export interface InterfaceStudent {
+  fullName: string;
+  cellphone: string;
+  email: string;
+  password: string;
+  enrolledPeriod: 'morning' | 'afternoon' | 'night';
+}
+
+export enum EnrolledPeriod {
+  MORNING = 'morning',
+  AFTERNOON = 'afternoon',
+  NIGHT = 'night',
+}
+
 @Table
 export class Student extends Model {
   @Column({
@@ -26,20 +40,19 @@ export class Student extends Model {
   @Column({
     type: DataType.STRING,
     allowNull: false,
+    unique: true,
+  })
+  email: string;
+
+  @Column({
+    type: DataType.STRING,
+    allowNull: false,
   })
   password: string;
 
-  //Criar uma coluna com o período que o aluno está matriculado. Procurar o tipo enum.
-  /* @Column({
-    type: DataType.BOOLEAN,
-    defaultValue: false,
-  })
-  hasPaidMonthlyFee: boolean; */
-
   @Column({
-    type: DataType.BOOLEAN,
-    defaultValue: false,
+    type: DataType.ENUM('morning', 'afternoon', 'night'),
+    allowNull: false,
   })
-  hasPaidMonthlyFee: boolean;
-  
+  enrolledPeriod: EnrolledPeriod;
 }

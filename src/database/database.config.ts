@@ -1,8 +1,7 @@
 import { Sequelize } from 'sequelize-typescript';
 import pg from 'pg';
 import { Student } from 'src/users/students/student.entity';
-import { Admin } from 'src/users/admins/admin.entity';
-import { Teacher } from 'src/users/teachers/teacher.entity';
+//import { Admin } from 'src/users/admins/admin.entity';
 
 export const databaseProviders = [
   {
@@ -22,7 +21,7 @@ export const databaseProviders = [
             }
         }
       });
-      sequelize.addModels([Teacher, Admin, Student]) //Aqui irei colocar os modelos
+      sequelize.addModels([Student]) //Aqui irei colocar os modelos
       await sequelize.sync();
 
       try {
