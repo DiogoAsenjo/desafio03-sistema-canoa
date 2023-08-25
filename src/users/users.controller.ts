@@ -3,12 +3,13 @@ import { Student } from './students/student.entity';
 import { Response } from 'express';
 //import { InterfaceStudent } from './students/student.entity';
 import { CreateStudentDto } from './students/student.dto';
+import { StudentsService } from './students/students.service';
 
 const users: Array<Object>= []
 
 @Controller()
 export class UsersController {
-    //constructor(private readonly appService: AppService) {}
+    constructor(private readonly studentService: StudentsService) {}
 
     @Get()
     mainPage(): string {
@@ -17,9 +18,13 @@ export class UsersController {
 
     //CREATE STUDENT
     @Post('signup')
-    createUser(@Res() res: Response, @Body() userData: CreateStudentDto): void {
-        users.push(userData);
-        console.log(users);
-        res.status(HttpStatus.OK).send('Usuário cadastrado');
+    async createUser(@Res() res: Response, @Body() userData: CreateStudentDto): Promise<void> {
+        try {
+            const response = await this.studentService.createAccount(userData);
+            res.status(HttpStatus.OK).send(response);
+        } catch(error) {
+            console.log(error);
+            res.status(HttpStatus.INTERNAL_SERVER_ERROR).send(error);
+        }
     }    
 }

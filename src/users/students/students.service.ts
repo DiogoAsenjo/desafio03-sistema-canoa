@@ -1,9 +1,19 @@
 import { Injectable } from '@nestjs/common';
+import { CreateStudentDto } from './student.dto';
+import { Student } from './student.entity';
 //import { InterfaceStudent } from './student.entity';
 
 @Injectable()
 export class StudentsService {
 
-    /* createAccount(newUser: InterfaceStudent): any {
-    } */
+    async createAccount(newUser: CreateStudentDto): Promise<string> {
+        const alreadyRegistered = await Student.findOne({
+            where: {
+              email: newUser.email,
+            },
+          });
+        if(alreadyRegistered) throw new Error ('User already exists, you should use another email');
+        await Student.create({...newUser});
+        return 'Student registered sucessfully!';
+    }
 }
