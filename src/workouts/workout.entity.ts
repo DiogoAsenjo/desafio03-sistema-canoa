@@ -23,19 +23,19 @@ export class Workout extends Model {
   timeSpent: string;
 
   @Column({
-    type: DataType.DECIMAL(10, 2),
+    type: DataType.FLOAT,
     allowNull: false,
   })
   distance: number;
 
   @Column({
-    type: DataType.DECIMAL(6, 2),
+    type: DataType.FLOAT,
     allowNull: false,
   })
   maxSpeed: number;
 
   @Column({
-    type: DataType.DECIMAL(6, 2),
+    type: DataType.FLOAT,
     allowNull: false,
   })
   averageSpeed: number;

@@ -15,13 +15,12 @@ export class CreateWorkoutDto {
   distance: number;
 
   @IsNotEmpty({ message: 'Max speed field is mandatory' })
-  @IsNumber({}, { message: 'Distance should be a number' })
-  @IsDecimal({ decimal_digits: '2' }, { message: 'Max speed should be a decimal number with two cases' })
+  @IsNumber({}, { message: 'Max speed should be a number' })
   @Min(0, { message: 'Max speed should be greater than zero' })
   maxSpeed: number;
 
   @IsNotEmpty({ message: 'Average speed field is mandatory' })
-  @IsDecimal({ decimal_digits: '2' }, { message: 'A velocidade média deve ser um número decimal com até duas casas decimais' })
-  @Min(0, { message: 'A velocidade média não pode ser negativa' })
+  @IsNumber({}, { message: 'Average speed should be a number' })
+  @Min(0, { message: 'Average speed should be greater than zero' })
   averageSpeed: number;
 }
