@@ -17,25 +17,25 @@ export class Workout extends Model {
   date: Date;
 
   @Column({
-    type: DataType.STRING, // Tempo gasto no treino
+    type: DataType.TIME,
     allowNull: false,
   })
   timeSpent: string;
 
   @Column({
-    type: DataType.DECIMAL(10, 2), // Distância (usando DECIMAL para precisão)
+    type: DataType.DECIMAL(10, 2),
     allowNull: false,
   })
   distance: number;
 
   @Column({
-    type: DataType.DECIMAL(6, 2), // Velocidade máxima (usando DECIMAL para precisão)
+    type: DataType.DECIMAL(6, 2),
     allowNull: false,
   })
   maxSpeed: number;
 
   @Column({
-    type: DataType.DECIMAL(6, 2), // Velocidade média (usando DECIMAL para precisão)
+    type: DataType.DECIMAL(6, 2),
     allowNull: false,
   })
   averageSpeed: number;
