@@ -1,8 +1,9 @@
-import { Body, Controller, Get, HttpStatus, Post, Res } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpStatus, Post, Res } from '@nestjs/common';
 import { Response } from 'express';
-import { CreateWorkoutDto } from './create-workout.dto';
+import { CreateWorkoutDto } from './dto/create-workout.dto';
 import { Workout } from './workout.entity';
 import { WorkoutsService } from './workouts.service';
+import { DeleteWorkoutDto } from './dto/delete.wokrout.dto';
 
 @Controller('workouts')
 export class WorkoutsController {
@@ -27,6 +28,7 @@ export class WorkoutsController {
             const workouts = await Workout.findAll();
             const allWorkouts = workouts.map((item) => {
                 return {
+                    id: item.id,
                     date: item.date,
                     timeSpent: item.timeSpent,
                     distance: item.distance,
@@ -38,6 +40,19 @@ export class WorkoutsController {
         } catch(error) {
             console.log(error);
             res.status(HttpStatus.INTERNAL_SERVER_ERROR).send(error);
+        }
+    }
+
+    //DELETE A WORKOUT
+    @Delete()
+    async deleteWorkout(@Res() res: Response, @Body() workoutId: DeleteWorkoutDto): Promise<void> {
+        try {
+            const idNumber = workoutId.id;
+            const response = await this.workoutsService.deleteWorkout(idNumber);
+            res.status(HttpStatus.OK).send(response)
+        } catch(erro) {
+            console.log(erro);
+            res.status(HttpStatus.INTERNAL_SERVER_ERROR).send(erro);
         }
     }
 }
