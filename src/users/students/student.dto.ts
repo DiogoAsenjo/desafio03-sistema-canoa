@@ -1,24 +1,30 @@
-import { IsNotEmpty, IsEmail, IsEnum, Length } from 'class-validator';
-import { EnrolledPeriod } from './student.entity'; // Importe o ENUM de enrolledPeriod da entidade, se necessário
+import { IsNotEmpty, IsEmail, IsEnum, IsStrongPassword } from 'class-validator';
+import { EnrolledPeriod } from './student.entity';
 
 export class CreateStudentDto {
-  @IsNotEmpty({ message: 'fullName is mandatory'})
+  @IsNotEmpty({ message: 'Full name field is mandatory'})
   fullName: string;
 
-  @IsNotEmpty({ message: 'cellphone is mandatory'})
-  @Length(10, 15) // Define o comprimento mínimo e máximo para o número de celular
+  @IsNotEmpty({ message: 'Cellphone field is mandatory'})
   cellphone: string;
 
-  @IsNotEmpty({ message: 'email is mandatory'})
-  @IsEmail({}, { message: 'email should be validy' })
+  @IsNotEmpty({ message: 'E-mail field is mandatory'})
+  @IsEmail({}, { message: 'E-mail should be valid' })
   email: string;
 
-  @IsNotEmpty({ message: 'password is mandatory'})
+  @IsNotEmpty({ message: 'Password field is mandatory'})
+  @IsStrongPassword({
+    minLength: 8,
+    minLowercase: 1,
+    minUppercase: 1,
+    minNumbers: 1,
+    minSymbols: 1
+  }, { message: "Password should have at least 8 caracters and one of each: lowercase, uppercase, a number and a symbol" } )
   password: string;
 
-  @IsNotEmpty({ message: 'enrolledPeriod is mandatory'})
+  @IsNotEmpty({ message: 'Enrolled period field is mandatory'})
   @IsEnum(EnrolledPeriod, {
-    message: 'EnrolledPeriodo should be: "morning", "afternoon" ou "night".',
+    message: 'Enrolled period should be: "morning", "afternoon" ou "night".',
   })
   enrolledPeriod: string;
 }
