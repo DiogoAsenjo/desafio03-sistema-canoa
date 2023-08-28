@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import { CreateStudentDto } from './create-student.dto';
+import { CreateStudentDto } from './dto/create-student.dto';
 import { Student } from './student.entity';
-import { LoginDto } from './login.dto';
+import { LoginDto } from './dto/login.dto';
 
 @Injectable()
 export class StudentsService {

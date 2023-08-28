@@ -1,8 +1,8 @@
 import { Body, Controller, Get, HttpStatus, Post, Res } from '@nestjs/common';
 import { Response } from 'express';
-import { CreateStudentDto } from './students/create-student.dto';
+import { CreateStudentDto } from './students/dto/create-student.dto';
 import { StudentsService } from './students/students.service';
-import { LoginDto } from './students/login.dto';
+import { LoginDto } from './students/dto/login.dto';
 
 @Controller()
 export class UsersController {

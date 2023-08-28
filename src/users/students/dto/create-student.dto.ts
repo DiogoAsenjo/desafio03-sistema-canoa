@@ -1,5 +1,5 @@
 import { IsNotEmpty, IsEmail, IsEnum, IsStrongPassword } from 'class-validator';
-import { EnrolledPeriod } from './student.entity';
+import { EnrolledPeriod } from '../student.entity';
 
 export class CreateStudentDto {
   @IsNotEmpty({ message: 'Full name field is mandatory'})
