@@ -1,13 +1,7 @@
 import { Table, Column, Model, DataType } from 'sequelize-typescript';
 
-export enum EnrolledPeriod {
-  MORNING = 'morning',
-  AFTERNOON = 'afternoon',
-  NIGHT = 'night',
-}
-
 @Table
-export class Student extends Model {
+export class User extends Model {
   @Column({
     type: DataType.INTEGER,
     allowNull: false,
@@ -41,10 +35,4 @@ export class Student extends Model {
     allowNull: false,
   })
   password: string;
-
-  @Column({
-    type: DataType.ENUM('morning', 'afternoon', 'night'),
-    allowNull: false,
-  })
-  enrolledPeriod: EnrolledPeriod;
 }

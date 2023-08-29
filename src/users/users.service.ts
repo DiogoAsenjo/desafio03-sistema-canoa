@@ -1,25 +1,25 @@
 import { Injectable } from '@nestjs/common';
-import { CreateStudentDto } from './dto/create-student.dto';
-import { Student } from './student.entity';
+import { CreateUserDto } from './dto/create-student.dto';
 import { LoginDto } from './dto/login.dto';
+import { User } from './user.entity';
 
 @Injectable()
-export class StudentsService {
+export class UsersService {
 
-    async createAccount(newUser: CreateStudentDto): Promise<string> {
-        const alreadyRegistered = await Student.findOne({
+    async createAccount(newUser: CreateUserDto): Promise<string> {
+        const alreadyRegistered = await User.findOne({
             where: {
               email: newUser.email,
             },
           });
         //if(alreadyRegistered) throw new Error ('User already exists, you should use another email');
         if(alreadyRegistered) return 'User already exists, you should use another email';
-        await Student.create({...newUser});
+        await User.create({...newUser});
         return 'Student registered sucessfully!';
     }
 
     async login(loginData: LoginDto): Promise<string> {
-      const userExists = await Student.findOne({
+      const userExists = await User.findOne({
         where: {
           email: loginData.email,
         },

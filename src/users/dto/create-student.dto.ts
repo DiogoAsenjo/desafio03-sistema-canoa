@@ -1,7 +1,6 @@
-import { IsNotEmpty, IsEmail, IsEnum, IsStrongPassword } from 'class-validator';
-import { EnrolledPeriod } from '../student.entity';
+import { IsNotEmpty, IsEmail, IsStrongPassword } from 'class-validator';
 
-export class CreateStudentDto {
+export class CreateUserDto {
   @IsNotEmpty({ message: 'Full name field is mandatory'})
   fullName: string;
 
@@ -21,12 +20,6 @@ export class CreateStudentDto {
     minSymbols: 1
   }, { message: "Password should have at least 8 caracters and one of each: lowercase, uppercase, a number and a symbol" } )
   password: string;
-
-  @IsNotEmpty({ message: 'Enrolled period field is mandatory'})
-  @IsEnum(EnrolledPeriod, {
-    message: 'Enrolled period should be: "morning", "afternoon" ou "night".',
-  })
-  enrolledPeriod: string;
 }
 
 
