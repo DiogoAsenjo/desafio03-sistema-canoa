@@ -1,6 +1,10 @@
-import { IsNotEmpty, IsDateString, IsNumber, IsString, Min } from 'class-validator';
+import { IsDateString, IsNotEmpty, IsNumber, IsString, Min } from "class-validator";
 
-export class CreateWorkoutDto {
+export class ModifyWorkoutDto {
+  @IsNotEmpty({ message: 'Id field is mandatory' })
+  @IsNumber({}, { message: 'Id should be a number' })
+  id: number  
+
   @IsNotEmpty({ message: 'Date field is mandatory' })
   @IsDateString({}, { message: 'Date should be in this format: YYYY-MM-DD' })
   date: Date; //date: string;
