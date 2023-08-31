@@ -3,9 +3,13 @@ import { CreateUserDto } from './dto/create-student.dto';
 import { LoginDto } from './dto/login.dto';
 import { User } from './user.entity';
 import * as bcrypt from 'bcrypt';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class UsersService {
+  constructor(
+    private jwtService: JwtService
+  ) {}
 
     async createAccount(newUser: CreateUserDto): Promise<string> {
         const alreadyRegistered = await User.findOne({
