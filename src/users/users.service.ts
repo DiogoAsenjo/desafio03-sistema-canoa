@@ -13,11 +13,13 @@ export class UsersService {
               email: newUser.email,
             },
           });
+
         //if(alreadyRegistered) throw new Error ('User already exists, you should use another email');
         if(alreadyRegistered) return 'User already exists, you should use another email';
-        const saltOrRounds = 10;
-        const hashedPassword = await bcrypt.hash(newUser.password, saltOrRounds);
+
+        const hashedPassword = await bcrypt.hash(newUser.password, Number(process.env.SALTORROUNDS));
         newUser.password = hashedPassword;
+
         await User.create({...newUser});
         return 'Student registered sucessfully!';
     }
