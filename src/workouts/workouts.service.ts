@@ -1,22 +1,25 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, Injectable } from '@nestjs/common';
 import { Workout } from './workout.entity';
 import { ModifyWorkoutDto } from './dto/modify-workout.dto';
 
 @Injectable()
 export class WorkoutsService {
 
-    async deleteWorkout(idWorkout: number): Promise<string> {
+    async deleteWorkout(idWorkout: number): Promise<Object> {
         const idExistent = await Workout.findByPk(idWorkout);
-        //if(alreadyRegistered) throw new Error ('User already exists, you should use another email');
-        if(!idExistent) return "There's no Workout with this id. To see all visit: workouts/all";
+        
+        if(!idExistent) throw new HttpException("There's no Workout with this id. To see all visit: workouts/all", 400);
+
         await idExistent.destroy();
-        return 'Workout deleted sucessfully!';
+        return {
+            message: 'Workout deleted sucessfully!',
+        };
     }
 
-    async modifyWorkout(workout: ModifyWorkoutDto): Promise<string> {
+    async modifyWorkout(workout: ModifyWorkoutDto): Promise<Object> {
         const idExistent = await Workout.findByPk(workout.id);
         
-        if(!idExistent) return "There's no Workout with this id. To see all visit: workouts/all";
+        if(!idExistent) throw new HttpException("There's no Workout with this id. To see all visit: workouts/all", 400);
 
         idExistent.date = workout.date;
         idExistent.timeSpent = workout.timeSpent;
@@ -25,6 +28,9 @@ export class WorkoutsService {
         idExistent.averageSpeed = workout.averageSpeed;
         await idExistent.save();
 
-        return "Workout modified with success!";
+        return {
+            message: "Workout modified with success!",
+            workoutModified: workout
+        };
     }
 }
