@@ -10,7 +10,7 @@ export class UsersService {
   constructor(
     private jwtService: JwtService
   ) {}
-  
+
     async createAccount(newUser: CreateUserDto): Promise<Object> {
         const alreadyRegistered = await User.findOne({
             where: {

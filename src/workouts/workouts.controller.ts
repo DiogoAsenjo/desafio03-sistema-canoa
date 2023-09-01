@@ -1,16 +1,18 @@
-import { Body, Controller, Delete, Get, HttpStatus, Post, Put, Res } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpStatus, Post, Put, Res, UseGuards } from '@nestjs/common';
 import { Response } from 'express';
 import { CreateWorkoutDto } from './dto/create-workout.dto';
 import { Workout } from './workout.entity';
 import { WorkoutsService } from './workouts.service';
 import { DeleteWorkoutDto } from './dto/delete.wokrout.dto';
 import { ModifyWorkoutDto } from './dto/modify-workout.dto';
+import { AuthGuard } from 'src/auth/auth.guard';
 
 @Controller('workouts')
 export class WorkoutsController {
     constructor(private readonly workoutsService: WorkoutsService) {}
 
     //CREATE WORKOUT
+    @UseGuards(AuthGuard)
     @Post()
     async createWorkout(@Res() res: Response, @Body() workoutData: CreateWorkoutDto): Promise<void> {
         try {
@@ -26,6 +28,7 @@ export class WorkoutsController {
     }
 
     //SHOW ALL WORKOUTS
+    @UseGuards(AuthGuard)
     @Get('all')
     async showAllWorkouts(@Res() res: Response): Promise<void> {
         try {
@@ -49,6 +52,7 @@ export class WorkoutsController {
     }
 
     //DELETE A WORKOUT
+    @UseGuards(AuthGuard)
     @Delete()
     async deleteWorkout(@Res() res: Response, @Body() workoutId: DeleteWorkoutDto): Promise<void> {
         try {
@@ -62,6 +66,7 @@ export class WorkoutsController {
     }
 
     //MODIFY A WORKOUT
+    @UseGuards(AuthGuard)
     @Put('modify')
     async modifyWorkout(@Res() res: Response, @Body() workout: ModifyWorkoutDto): Promise<void> {
         try {
