@@ -1,4 +1,4 @@
-import { Injectable, NestMiddleware } from '@nestjs/common';
+/* import { Injectable, NestMiddleware } from '@nestjs/common';
 import { Request, Response, NextFunction } from 'express';
 import { JwtService } from '@nestjs/jwt';
 
@@ -33,4 +33,4 @@ export class AuthMiddleware implements NestMiddleware {
       return response.status(401).json({ message: 'Token is required' });
     }
   }
-}
+} */

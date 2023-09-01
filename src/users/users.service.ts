@@ -50,11 +50,11 @@ export class UsersService {
       return {
         message: "Logged in succesfully!",
         user: userExists,
-        //access_token: await this.jwtService.signAsync(payload)  //igual a documentação mas não funciona. Apresenta o erro: Error: secretOrPrivateKey must have a value.
-        access_token: await this.jwtService.signAsync({}, {
+        access_token: await this.jwtService.signAsync(payload)  //igual a documentação mas não funciona. Apresenta o erro: Error: secretOrPrivateKey must have a value.
+        /* access_token: await this.jwtService.signAsync({}, {
           secret: '716f925b8fc42ac54bd726d2a424550af5cea212',
           subject: String(userExists.id),
-        })
+        }) */
       }
     }
 }

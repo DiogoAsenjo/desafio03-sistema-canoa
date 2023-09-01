@@ -3,7 +3,7 @@ import { DatabaseModule } from './database/database.module';
 import { UsersModule } from './users/users.module';
 import { WorkoutsModule } from './workouts/workouts.module';
 import { AuthModule } from './auth/auth.module';
-import { AuthMiddleware } from './middlewares/auth';
+//import { AuthMiddleware } from './middlewares/auth';
 import { JwtModule } from '@nestjs/jwt';
 
 @Module({
@@ -15,11 +15,11 @@ import { JwtModule } from '@nestjs/jwt';
   controllers: [],
   providers: [],
 })
-export class AppModule implements NestModule{
+export class AppModule {} /* implements NestModule{
   configure(consumer: MiddlewareConsumer) {
     
     consumer
       .apply(AuthMiddleware)
       .forRoutes('/workouts') //Conferir se todas as rotas decorrentes do workouts servirão.
   }
-}
+} */
