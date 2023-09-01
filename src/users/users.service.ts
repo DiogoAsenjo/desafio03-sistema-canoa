@@ -3,10 +3,14 @@ import { CreateUserDto } from './dto/create-student.dto';
 import { LoginDto } from './dto/login.dto';
 import { User } from './user.entity';
 import * as bcrypt from 'bcrypt';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class UsersService {
-
+  constructor(
+    private jwtService: JwtService
+  ) {}
+  
     async createAccount(newUser: CreateUserDto): Promise<Object> {
         const alreadyRegistered = await User.findOne({
             where: {
@@ -39,9 +43,12 @@ export class UsersService {
 
       if(!validPassword) throw new HttpException("Invalid password, try again!", 400);
 
+      const payload = { sub: userExists.id, username: userExists.email }
+
       return {
         message: "Logged in succesfully!",
         user: userExists,
+        access_token: await this.jwtService.signAsync(payload),
       }
     }
 }
