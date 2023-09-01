@@ -43,15 +43,15 @@ export class UsersService {
 
       if(!validPassword) throw new HttpException("Invalid password, try again!", 400);
 
-      /* const payload = { sub: userExists.id, username: userExists.email};
-
-      return {
-        access_token: await this.jwtService.signAsync(payload);
-      } */
+      //const payload = { sub: userExists.id, username: userExists.email};
 
       return {
         message: "Logged in succesfully!",
-        user: userExists
+        user: userExists,
+        access_token: await this.jwtService.signAsync({}, {
+          secret: '716f925b8fc42ac54bd726d2a424550af5cea212',
+          subject: String(userExists.id),
+        }),
       }
     }
 }
