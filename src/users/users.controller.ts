@@ -20,6 +20,7 @@ export class UsersController {
     async createUser(@Res() res: Response, @Body() userData: CreateUserDto): Promise<void> {
         try {
             const response = await this.usersService.createAccount(userData);
+            //Esse res.status não é necessário. Os retornos devem ser todos feitos no service
             res.status(HttpStatus.OK).send(response);
         } catch(error) {
             console.log(error);
