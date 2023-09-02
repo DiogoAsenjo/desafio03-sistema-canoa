@@ -17,7 +17,8 @@ export class UsersService {
               email: newUser.email,
             },
           });
-
+        
+        //Não é o service que deve fazer esse tipo de validação. Se possível seria bom criar um Decorator para validade se o usuário existe ou não e deixar tudo no DTO.
         if(alreadyRegistered) throw new HttpException("User already exist, you should use another e-mail", 400);
 
         const hashedPassword = await bcrypt.hash(newUser.password, Number(process.env.SALTORROUNDS));

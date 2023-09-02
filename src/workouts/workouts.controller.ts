@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, HttpStatus, Post, Put, Res, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpStatus, Param, Post, Put, Res, UseGuards } from '@nestjs/common';
 import { Response } from 'express';
 import { CreateWorkoutDto } from './dto/create-workout.dto';
 import { Workout } from './workout.entity';
@@ -76,11 +76,40 @@ export class WorkoutsController {
         }
     }
 
+     //DELETE A WORKOUT WITH ID
+     @UseGuards(AuthGuard)
+     @Delete('/:id')
+     @ApiOperation({ summary: 'Delete a workout' })
+     async deleteWorkoutById(@Res() res: Response, @Param() workoutId: DeleteWorkoutDto): Promise<void> {
+         try {
+             const idNumber = workoutId.id;
+             const response = await this.workoutsService.deleteWorkout(idNumber);
+             res.status(HttpStatus.OK).send(response)
+         } catch(erro) {
+             console.log(erro);
+             res.status(HttpStatus.INTERNAL_SERVER_ERROR).send(erro);
+         }
+     }
+
     //MODIFY A WORKOUT
     @UseGuards(AuthGuard)
     @Put('modify')
     @ApiOperation({ summary: 'Modify a workout' })
     async modifyWorkout(@Res() res: Response, @Body() workout: ModifyWorkoutDto): Promise<void> {
+        try {
+            const response = await this.workoutsService.modifyWorkout(workout);
+            res.status(HttpStatus.OK).send(response)
+        } catch(erro) {
+            console.log(erro);
+            res.status(HttpStatus.INTERNAL_SERVER_ERROR).send(erro);
+        }
+    }
+
+    //MODIFY A WORKOUT BY ID
+    @UseGuards(AuthGuard)
+    @Put('modify/:id')
+    @ApiOperation({ summary: 'Modify a workout' })
+    async modifyWorkoutById(@Res() res: Response,@Param() workoutId: number, @Body() workout: ModifyWorkoutDto): Promise<void> {
         try {
             const response = await this.workoutsService.modifyWorkout(workout);
             res.status(HttpStatus.OK).send(response)
