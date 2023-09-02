@@ -1,5 +1,5 @@
 import { HttpException, Injectable } from '@nestjs/common';
-import { CreateUserDto } from './dto/create-student.dto';
+import { CreateUserDto } from './dto/create-user.dto';
 import { LoginDto } from './dto/login.dto';
 import { User } from './user.entity';
 import * as bcrypt from 'bcrypt';

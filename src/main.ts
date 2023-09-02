@@ -11,9 +11,11 @@ async function bootstrap() {
   
   const config = new DocumentBuilder()
     .setTitle('Sistema Canoa')
-    .setDescription('API with a Login system and to with a CRUD of workouts')
+    .setDescription('API with a Login system and with a CRUD of workouts')
     .setVersion('1.0')
-    .addTag('vaa')
+    .addTag('Workouts')
+    .addTag('Users')
+    .addBearerAuth()
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);

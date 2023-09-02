@@ -6,7 +6,15 @@ import { WorkoutsService } from './workouts.service';
 import { DeleteWorkoutDto } from './dto/delete.wokrout.dto';
 import { ModifyWorkoutDto } from './dto/modify-workout.dto';
 import { AuthGuard } from 'src/auth/auth.guard';
+import {
+    ApiBearerAuth,
+    ApiOperation,
+    ApiResponse,
+    ApiTags,
+  } from '@nestjs/swagger';
 
+@ApiBearerAuth()  
+@ApiTags('Workouts')  
 @Controller('workouts')
 export class WorkoutsController {
     constructor(private readonly workoutsService: WorkoutsService) {}
@@ -14,6 +22,7 @@ export class WorkoutsController {
     //CREATE WORKOUT
     @UseGuards(AuthGuard)
     @Post()
+    @ApiOperation({ summary: 'Create a new workout' })
     async createWorkout(@Res() res: Response, @Body() workoutData: CreateWorkoutDto): Promise<void> {
         try {
             const newWorkout = await Workout.create({...workoutData});
@@ -30,6 +39,7 @@ export class WorkoutsController {
     //SHOW ALL WORKOUTS
     @UseGuards(AuthGuard)
     @Get('all')
+    @ApiOperation({ summary: 'Show all workouts' })
     async showAllWorkouts(@Res() res: Response): Promise<void> {
         try {
             const workouts = await Workout.findAll();
@@ -54,6 +64,7 @@ export class WorkoutsController {
     //DELETE A WORKOUT
     @UseGuards(AuthGuard)
     @Delete()
+    @ApiOperation({ summary: 'Delete a workout' })
     async deleteWorkout(@Res() res: Response, @Body() workoutId: DeleteWorkoutDto): Promise<void> {
         try {
             const idNumber = workoutId.id;
@@ -68,6 +79,7 @@ export class WorkoutsController {
     //MODIFY A WORKOUT
     @UseGuards(AuthGuard)
     @Put('modify')
+    @ApiOperation({ summary: 'Modify a workout' })
     async modifyWorkout(@Res() res: Response, @Body() workout: ModifyWorkoutDto): Promise<void> {
         try {
             const response = await this.workoutsService.modifyWorkout(workout);

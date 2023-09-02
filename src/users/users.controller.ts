@@ -1,20 +1,23 @@
 import { Body, Controller, Get, HttpStatus, Post, Res } from '@nestjs/common';
 import { Response } from 'express';
-import { CreateUserDto } from './dto/create-student.dto';
+import { CreateUserDto } from './dto/create-user.dto';
 import { LoginDto } from './dto/login.dto';
 import { UsersService } from './users.service';
+import {
+    ApiBearerAuth,
+    ApiOperation,
+    ApiResponse,
+    ApiTags,
+  } from '@nestjs/swagger';
 
+@ApiTags('Users')  
 @Controller()
 export class UsersController {
     constructor(private readonly usersService: UsersService) {}
 
-    @Get()
-    mainPage(): string {
-        return 'Bem vindo ao site da canoa!'
-    }
-
     //CREATE USER
     @Post('signup')
+    @ApiOperation({ summary: 'Create a new user' })
     async createUser(@Res() res: Response, @Body() userData: CreateUserDto): Promise<void> {
         try {
             const response = await this.usersService.createAccount(userData);
@@ -27,6 +30,7 @@ export class UsersController {
     
     //LOGIN
     @Post()
+    @ApiOperation({ summary: 'Log a user in the system' })
     async login(@Res() res: Response, @Body() loginData: LoginDto): Promise<void> {
         try {
             const response = await this.usersService.login(loginData);
