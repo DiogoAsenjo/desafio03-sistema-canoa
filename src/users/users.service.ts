@@ -1,36 +1,54 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-student.dto';
 import { LoginDto } from './dto/login.dto';
 import { User } from './user.entity';
+import * as bcrypt from 'bcrypt';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class UsersService {
+  constructor(
+    private jwtService: JwtService
+  ) {}
 
-    async createAccount(newUser: CreateUserDto): Promise<string> {
+    async createAccount(newUser: CreateUserDto): Promise<Object> {
         const alreadyRegistered = await User.findOne({
             where: {
               email: newUser.email,
             },
           });
-        //if(alreadyRegistered) throw new Error ('User already exists, you should use another email');
-        if(alreadyRegistered) return 'User already exists, you should use another email';
+
+        if(alreadyRegistered) throw new HttpException("User already exist, you should use another e-mail", 400);
+
+        const hashedPassword = await bcrypt.hash(newUser.password, Number(process.env.SALTORROUNDS));
+        newUser.password = hashedPassword;
+
         await User.create({...newUser});
-        return 'Student registered sucessfully!';
+        return {
+          message: 'Student registered sucessfully!',
+          newUser: newUser
+        };
     }
 
-    async login(loginData: LoginDto): Promise<string> {
+    async login(loginData: LoginDto): Promise<Object> {
       const userExists = await User.findOne({
         where: {
           email: loginData.email,
         },
       });
 
-      if(!userExists) return "User doesn't exist, check your credentials";
+      if(!userExists) throw new HttpException("User doesn't exist, check your credentials", 400);
       
-      const validPassword = userExists.password === loginData.password;
+      const validPassword = await bcrypt.compare(loginData.password, userExists.password);
 
-      if(!validPassword) return "Invalid password, try again!";
+      if(!validPassword) throw new HttpException("Invalid password, try again!", 400);
 
-      return "Logged in succesfully!"
+      const payload = { sub: userExists.id, username: userExists.email }
+
+      return {
+        message: "Logged in succesfully!",
+        user: userExists,
+        access_token: await this.jwtService.signAsync(payload),
+      }
     }
 }
