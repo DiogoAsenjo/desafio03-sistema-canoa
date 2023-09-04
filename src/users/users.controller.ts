@@ -31,14 +31,9 @@ export class UsersController {
         description: 'Return a message saying if something wrong happened while creating an user',
     })
     async createUser(@Res() res: Response, @Body() userData: CreateUserDto): Promise<void> {
-        try {
-            const response = await this.usersService.createAccount(userData);
-            //Esse res.status não é necessário. Os retornos devem ser todos feitos no service
-            res.status(HttpStatus.OK).send(response);
-        } catch(error) {
-            console.log(error);
-            res.status(HttpStatus.INTERNAL_SERVER_ERROR).send(error);
-        }
+        const response = await this.usersService.createAccount(userData);
+        //Esse res.status não é necessário. Os retornos devem ser todos feitos no service
+        res.status(HttpStatus.OK).send(response);
     }
     
     //LOGIN
@@ -52,12 +47,7 @@ export class UsersController {
         description: 'Return a message saying if something wrong happened while loggin in',
     })
     async login(@Res() res: Response, @Body() loginData: LoginDto): Promise<void> {
-        try {
-            const response = await this.usersService.login(loginData);
-            res.status(HttpStatus.OK).send(response);
-        } catch(error) {
-            console.log(error);
-            res.status(HttpStatus.INTERNAL_SERVER_ERROR).send(error);
-        }
+        const response = await this.usersService.login(loginData);
+        res.status(HttpStatus.OK).send(response);
     }
 }
