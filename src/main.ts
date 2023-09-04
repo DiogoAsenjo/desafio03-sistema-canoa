@@ -8,6 +8,7 @@ dotevn.config();
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  app.enableCors();
   
   const config = new DocumentBuilder()
     .setTitle('Sistema Canoa')
@@ -26,6 +27,7 @@ async function bootstrap() {
     transform: true,
     disableErrorMessages: false,
   }));
+
   await app.listen(3333);
 }
 bootstrap();

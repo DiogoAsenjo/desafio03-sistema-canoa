@@ -1,4 +1,4 @@
-import { Body, Controller, HttpStatus, Post, Res } from '@nestjs/common';
+import { Body, Controller, Get, HttpStatus, Post, Res } from '@nestjs/common';
 import { Response } from 'express';
 import { CreateUserDto } from './dto/create-user.dto';
 import { LoginDto } from './dto/login.dto';
@@ -14,6 +14,11 @@ import {
 @Controller()
 export class UsersController {
     constructor(private readonly usersService: UsersService) {}
+
+    @Get()
+    testing(): any {
+        return 'Página de teste!'
+    }
 
     //CREATE USER
     @Post('signup')
