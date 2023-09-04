@@ -1,5 +1,5 @@
 import { HttpException, Injectable } from '@nestjs/common';
-import { CreateUserDto } from './dto/create-student.dto';
+import { CreateUserDto } from './dto/create-user.dto';
 import { LoginDto } from './dto/login.dto';
 import { User } from './user.entity';
 import * as bcrypt from 'bcrypt';
@@ -17,7 +17,8 @@ export class UsersService {
               email: newUser.email,
             },
           });
-
+        
+        //Não é o service que deve fazer esse tipo de validação. Se possível seria bom criar um Decorator para validade se o usuário existe ou não e deixar tudo no DTO.
         if(alreadyRegistered) throw new HttpException("User already exist, you should use another e-mail", 400);
 
         const hashedPassword = await bcrypt.hash(newUser.password, Number(process.env.SALTORROUNDS));
