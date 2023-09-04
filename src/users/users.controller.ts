@@ -4,6 +4,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { LoginDto } from './dto/login.dto';
 import { UsersService } from './users.service';
 import {
+    ApiBadRequestResponse,
     ApiOperation,
     ApiResponse,
     ApiTags,
@@ -17,6 +18,13 @@ export class UsersController {
     //CREATE USER
     @Post('signup')
     @ApiOperation({ summary: 'Create a new user' })
+    @ApiResponse({
+        status: 200,
+        description: 'Return a message saying the user was created and an Object with the data of the User',
+    })
+    @ApiBadRequestResponse({
+        description: 'Return a message saying if something wrong happened while creating an user',
+    })
     async createUser(@Res() res: Response, @Body() userData: CreateUserDto): Promise<void> {
         try {
             const response = await this.usersService.createAccount(userData);
@@ -31,6 +39,13 @@ export class UsersController {
     //LOGIN
     @Post()
     @ApiOperation({ summary: 'Log a user in the system' })
+    @ApiResponse({
+        status: 200,
+        description: 'Return a message saying the user logged in, the data of the user and a jwt token bearer',
+    })
+    @ApiBadRequestResponse({
+        description: 'Return a message saying if something wrong happened while loggin in',
+    })
     async login(@Res() res: Response, @Body() loginData: LoginDto): Promise<void> {
         try {
             const response = await this.usersService.login(loginData);
