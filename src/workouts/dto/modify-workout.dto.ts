@@ -2,10 +2,10 @@ import { ApiProperty } from "@nestjs/swagger";
 import { IsDateString, IsNotEmpty, IsNumber, IsString, Min } from "class-validator";
 
 export class ModifyWorkoutDto {
-  @ApiProperty({ description: 'ID of the workout to be modified' })
+  /*@ApiProperty({ description: 'ID of the workout to be modified' })
   @IsNotEmpty({ message: 'Id field is mandatory' })
   @IsNumber({}, { message: 'Id should be a number' })
-  id: number  
+  id: number */
 
   @ApiProperty({ description: 'Date of the workout (in the format: YYYY-MM-DD)' })
   @IsNotEmpty({ message: 'Date field is mandatory' })

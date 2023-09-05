@@ -16,8 +16,8 @@ export class WorkoutsService {
         };
     }
 
-    async modifyWorkout(workout: ModifyWorkoutDto): Promise<Object> {
-        const idExistent = await Workout.findByPk(workout.id);
+    async modifyWorkout(workoutId: number, workout: ModifyWorkoutDto): Promise<Object> {
+        const idExistent = await Workout.findByPk(workoutId);
         
         if(!idExistent) throw new HttpException("There's no Workout with this id. To see all visit: workouts/all", 400);
 

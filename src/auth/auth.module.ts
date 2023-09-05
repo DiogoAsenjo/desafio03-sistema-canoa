@@ -8,7 +8,7 @@ dotevn.config();
     imports: [JwtModule.register({
         global: true,
         secret: process.env.JWTSECRET,
-        signOptions: { expiresIn: '60s' },
+        signOptions: { expiresIn: '1h' },
       }),],
     exports: []
 })
