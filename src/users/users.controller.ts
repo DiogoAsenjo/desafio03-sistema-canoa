@@ -15,11 +15,6 @@ import {
 export class UsersController {
     constructor(private readonly usersService: UsersService) {}
 
-    @Get()
-    testing(): any {
-        return 'Página de teste!'
-    }
-
     //CREATE USER
     @Post('signup')
     @ApiOperation({ summary: 'Create a new user' })
