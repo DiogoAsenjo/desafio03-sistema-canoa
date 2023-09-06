@@ -1,73 +1,49 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
+# VA'A WORKOUTS REST API AND CRUD
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+## Objective
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+This API was developed during the NodeJS training program at ModalGR. Its main objectives were to meet the requirements of Challenge 03, which include:
 
-## Description
+- Utilizing NestJS, TypeScript, Sequelize, and PostgreSQL.
+- 100% English project.
+- Password encryption when saving to the database.
+- Authentication for certain routes.
+- Full CRUD functionality.
+- Integration with a frontend.
+- Accessible through the web.
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## Problem
 
-## Installation
+In addition to my passion for technology, I am also an avid paddler. However, despite tracking my workouts on my watch, my team and I struggled to maintain effective control over our training progress.
 
-```bash
-$ yarn install
-```
+To address this issue, I decided to develop this project, which includes a login and password system. Only registered users can add workouts, making it easier to monitor the team's progress.
 
-## Running the app
+## Technologies Used
 
-```bash
-# development
-$ yarn run start
+- NestJS
+- TypeScript
+- Sequelize
+- PostgreSQL
+- Swagger
+- bcrypt
+- JWT
+- React
+- Axios
 
-# watch mode
-$ yarn run start:dev
+## How to Run the Project and API Documentation
 
-# production mode
-$ yarn run start:prod
-```
+You can access all API routes and documentation at the following link: [documentation](https://desafio03-sistema-canoa.vercel.app/)
 
-## Test
+The complete project can be run and tested online by anyone through this link: [final project](https://diogoasenjo.github.io/desafio03-sistema-canoa-react/)
 
-```bash
-# unit tests
-$ yarn run test
+The frontend repository can be accessed here: [frontend](https://github.com/DiogoAsenjo/desafio03-sistema-canoa-react)
 
-# e2e tests
-$ yarn run test:e2e
+## Improvements and Areas for Growth
 
-# test coverage
-$ yarn run test:cov
-```
+As I had limited time to complete the project and had minimal frontend experience, I identified several areas for improvement, despite being satisfied with the results:
 
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](LICENSE).
+- SQL, database modeling, relationships, and related topics.
+- Creating more complex routes.
+- Handling API errors and responses.
+- Enhancing backend and frontend integration. I learned valuable lessons during this project, which will be applied in future projects.
+- Frontend, particularly CSS.
