@@ -1,5 +1,5 @@
-import { Body, Controller, Delete, Get, HttpStatus, Param, Post, Put, Res, UseGuards } from '@nestjs/common';
-import { Response } from 'express';
+import { Body, Controller, Delete, Get, HttpStatus, Param, Post, Put, Req, Res, UseGuards } from '@nestjs/common';
+import { Response, Request } from 'express';
 import { CreateWorkoutDto } from './dto/create-workout.dto';
 import { Workout } from './workout.entity';
 import { WorkoutsService } from './workouts.service';
@@ -14,11 +14,17 @@ import {
     ApiUnauthorizedResponse,
   } from '@nestjs/swagger';
 
+interface CustomRequest extends Request {
+    user: any; // Defina o tipo de 'user' de acordo com o que você espera no payload do token JWT
+  }
+
 @ApiBearerAuth()  
 @ApiTags('Workouts')  
 @Controller('workouts')
 export class WorkoutsController {
-    constructor(private readonly workoutsService: WorkoutsService) {}
+    constructor(
+        private readonly workoutsService: WorkoutsService,
+    ) {}
 
     //CREATE WORKOUT
     @UseGuards(AuthGuard)
@@ -35,13 +41,52 @@ export class WorkoutsController {
         description: 'Return a message saying if the user is not authorized',
     })
     
-    async createWorkout(@Res() res: Response, @Body() workoutData: CreateWorkoutDto): Promise<void> {
-        const newWorkout = await Workout.create({...workoutData});
+    async createWorkout(
+        @Res() res: Response, 
+        @Body() workoutData: CreateWorkoutDto, 
+        @Req() request: CustomRequest
+    ): Promise<void> {
+        const userPayload = request.user;
+        const userId = userPayload.sub;
+        const newWorkout = await Workout.create({...workoutData, userId: userId});
             res.status(HttpStatus.OK).send({
                 message: "Workout created succesfully!",
                 workout: newWorkout
             });
         }
+
+    //SHOW USER WORKOUTS
+    @UseGuards(AuthGuard)
+    @Get('user')
+    @ApiOperation({ summary: 'Show user workouts' })
+    @ApiResponse({
+        status: 200,
+        description: 'Return all workouts that the user registereds in the system',
+    })
+    @ApiBadRequestResponse({
+        description: 'Return a message saying if something wrong happened while showing user workouts',
+    })
+    @ApiUnauthorizedResponse({
+        description: 'Return a message saying if the user is not authorized',
+    })
+    async showUserWorkouts(
+        //@Param('id') userId: number, 
+        @Res() res: Response, 
+        @Req() request: CustomRequest): Promise<void> {
+        try {
+            const userPayload = request.user;
+            const userId = userPayload.sub;
+            const userWorkouts = await Workout.findAll({
+                where: {
+                    userId: userId
+                }
+            });
+            res.status(HttpStatus.OK).send(userWorkouts);
+        } catch(error) {
+            console.log(error);
+            res.status(HttpStatus.INTERNAL_SERVER_ERROR).send(error);
+        }
+    }
 
     //SHOW ALL WORKOUTS
     @UseGuards(AuthGuard)
