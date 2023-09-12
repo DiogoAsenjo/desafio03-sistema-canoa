@@ -14,8 +14,9 @@ import {
     ApiUnauthorizedResponse,
   } from '@nestjs/swagger';
 
+//Interface created to be able to pick user id from JWT. 
 interface CustomRequest extends Request {
-    user: any; // Defina o tipo de 'user' de acordo com o que você espera no payload do token JWT
+    user: any;
   }
 
 @ApiBearerAuth()  
@@ -54,6 +55,25 @@ export class WorkoutsController {
                 workout: newWorkout
             });
         }
+    
+    //SHOW SPECIFIC SCHEDULES ONLY    
+    @Get('/:schedule')
+    async getWorkoutBySchedule(
+        @Param('schedule') schedule: string, 
+        @Res() res: Response
+    ): Promise<void> {
+        try {
+            const userWorkouts = await Workout.findAll({
+                where: {
+                    schedule: schedule
+                }
+            });
+            res.status(HttpStatus.OK).send(userWorkouts);
+        } catch(error) {
+            console.log(error);
+            res.status(HttpStatus.INTERNAL_SERVER_ERROR).send(error);
+        }
+    }
 
     //SHOW USER WORKOUTS
     @UseGuards(AuthGuard)
@@ -69,10 +89,11 @@ export class WorkoutsController {
     @ApiUnauthorizedResponse({
         description: 'Return a message saying if the user is not authorized',
     })
+    
     async showUserWorkouts(
-        //@Param('id') userId: number, 
         @Res() res: Response, 
-        @Req() request: CustomRequest): Promise<void> {
+        @Req() request: CustomRequest
+    ): Promise<void> {
         try {
             const userPayload = request.user;
             const userId = userPayload.sub;
