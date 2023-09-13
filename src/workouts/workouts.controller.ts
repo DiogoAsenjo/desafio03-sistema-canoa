@@ -19,13 +19,13 @@ import {
     user: any;
   }
 
-@ApiBearerAuth()  
 @ApiTags('Workouts')  
 @Controller('workouts')
 export class WorkoutsController {
     constructor(private readonly workoutsService: WorkoutsService) {}
 
     //CREATE WORKOUT
+    @ApiBearerAuth()
     @UseGuards(AuthGuard)
     @Post()
     @ApiOperation({ summary: 'Create a new workout' })
@@ -64,9 +64,7 @@ export class WorkoutsController {
     @ApiBadRequestResponse({
         description: 'Return a message saying if something wrong happened while showing all workouts',
     })
-    @ApiUnauthorizedResponse({
-        description: 'Return a message saying if the user is not authorized',
-    })
+
     async showAllWorkouts(@Res() res: Response): Promise<void> {
         try {
             const workouts = await Workout.findAll();
@@ -78,6 +76,7 @@ export class WorkoutsController {
     }
 
     //SHOW USER WORKOUTS
+    @ApiBearerAuth()
     @UseGuards(AuthGuard)
     @Get('user')
     @ApiOperation({ summary: 'Show user workouts' })
@@ -121,9 +120,6 @@ export class WorkoutsController {
     @ApiBadRequestResponse({
         description: 'Return a message saying if something wrong happened while showing the schedule selected workouts',
     })
-    @ApiUnauthorizedResponse({
-        description: 'Return a message saying if the user is not authorized',
-    })
 
     async getWorkoutBySchedule(
         @Param('schedule') schedule: string, 
@@ -143,6 +139,7 @@ export class WorkoutsController {
     }
 
      //DELETE A WORKOUT
+     @ApiBearerAuth()
      @UseGuards(AuthGuard)
      @Delete('/:id')
      @ApiOperation({ summary: 'Delete a workout' })
@@ -166,6 +163,7 @@ export class WorkoutsController {
      }
 
     //MODIFY A WORKOUT
+    @ApiBearerAuth()
     @UseGuards(AuthGuard)
     @Put('modify/:id')
     @ApiOperation({ summary: 'Modify a workout' })

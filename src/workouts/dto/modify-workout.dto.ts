@@ -8,7 +8,7 @@ export class ModifyWorkoutDto {
   @IsDateString({}, { message: 'Date should be in this format: YYYY-MM-DD' })
   date: Date; //date: string;
 
-  @ApiProperty({ description: 'Schedule of the workout', example: '6h30' })
+  @ApiProperty({ description: 'Schedule of the workout', example: '06h30' })
   @IsNotEmpty({ message: 'Schedule field is mandatory' })
   //@IsString({ message: 'Schedule should be in this format: XXhXX, "Trip" or "Other"' })
   @IsEnum(scheduleClass, { message: 'Schedule should be in this format: XXhXX, "Trip" or "Other' })
