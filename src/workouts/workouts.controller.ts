@@ -77,6 +77,40 @@ export class WorkoutsController {
         }
     }
 
+    //SHOW USER WORKOUTS
+    @UseGuards(AuthGuard)
+    @Get('user')
+    @ApiOperation({ summary: 'Show user workouts' })
+    @ApiResponse({
+        status: 200,
+        description: 'Return all workouts that the user registered in the system',
+    })
+    @ApiBadRequestResponse({
+        description: 'Return a message saying if something wrong happened while showing user workouts',
+    })
+    @ApiUnauthorizedResponse({
+        description: 'Return a message saying if the user is not authorized',
+    })
+
+    async showUserWorkouts(
+        @Res() res: Response, 
+        @Req() request: CustomRequest
+    ): Promise<void> {
+        try {
+            const userPayload = request.user;
+            const userId = userPayload.sub;
+            const userWorkouts = await Workout.findAll({
+                where: {
+                    userId: userId
+                }
+            });
+            res.status(HttpStatus.OK).send(userWorkouts);
+        } catch(error) {
+            console.log(error);
+            res.status(HttpStatus.INTERNAL_SERVER_ERROR).send(error);
+        }
+    }
+
      //DELETE A WORKOUT
      @UseGuards(AuthGuard)
      @Delete('/:id')
