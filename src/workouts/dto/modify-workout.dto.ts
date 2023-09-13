@@ -1,5 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { IsDateString, IsNotEmpty, IsNumber, IsString, Min } from "class-validator";
+import { IsDateString, IsEnum, IsNotEmpty, IsNumber, IsString, Min } from "class-validator";
 import { scheduleClass } from "../workout.entity";
 
 export class ModifyWorkoutDto {
@@ -10,8 +10,8 @@ export class ModifyWorkoutDto {
 
   @ApiProperty({ description: 'Schedule of the workout', example: '6h30' })
   @IsNotEmpty({ message: 'Schedule field is mandatory' })
-  @IsString({ message: 'Schedule should be in this format: XXhXX, "Trip" or "Other"' })
-  schedule: scheduleClass;
+  @IsEnum(scheduleClass, { message: 'Schedule should be in this format: XXhXX, "Trip" or "Other' })
+  schedule: string;
 
   @ApiProperty({ description: 'Time spent on the workout (in the format: HH:MM:SS)', example: '01:04:32' })
   @IsNotEmpty({ message: 'Time spent field is mandatory' })

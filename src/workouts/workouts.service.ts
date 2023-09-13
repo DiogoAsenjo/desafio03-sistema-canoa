@@ -22,6 +22,7 @@ export class WorkoutsService {
         if(!idExistent) throw new HttpException("There's no Workout with this id. To see all visit: workouts/all", 400);
 
         idExistent.date = workout.date;
+        idExistent.schedule = workout.schedule;
         idExistent.timeSpent = workout.timeSpent;
         idExistent.distance = workout.distance;
         idExistent.maxSpeed = workout.maxSpeed;

@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, HttpStatus, Param, Post, Put, Req, Res, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpException, HttpStatus, Param, Post, Put, Req, Res, UseGuards } from '@nestjs/common';
 import { Response, Request } from 'express';
 import { CreateWorkoutDto } from './dto/create-workout.dto';
 import { Workout } from './workout.entity';
@@ -111,6 +111,7 @@ export class WorkoutsController {
                     userId: userId
                 }
             });
+            //if (!userWorkouts) throw new HttpException("Usuário não possui treinos", 400);
             res.status(HttpStatus.OK).send(userWorkouts);
         } catch(error) {
             console.log(error);
@@ -129,13 +130,13 @@ export class WorkoutsController {
         description: 'Return a message saying if something wrong happened while showing all workouts',
     })
     async showAllWorkouts(@Res() res: Response): Promise<void> {
-        try {
+        // try {
             const workouts = await Workout.findAll();
             res.status(HttpStatus.OK).send(workouts);
-        } catch(error) {
-            console.log(error);
-            res.status(HttpStatus.INTERNAL_SERVER_ERROR).send(error);
-        }
+        // } catch(error) {
+        //     console.log(error);
+        //     res.status(HttpStatus.INTERNAL_SERVER_ERROR).send(error);
+        // }
     }
 
      //DELETE A WORKOUT

@@ -48,7 +48,7 @@ export class Workout extends Model {
     allowNull: false,
     values: Object.values(scheduleClass),
   })
-  schedule: scheduleClass;
+  schedule: string;
 
   @Column({
     type: DataType.TIME,
