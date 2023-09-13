@@ -55,7 +55,6 @@ export class WorkoutsController {
         }
 
     //SHOW ALL WORKOUTS
-    @UseGuards(AuthGuard)
     @Get('all')
     @ApiOperation({ summary: 'Show all workouts' })
     @ApiResponse({
@@ -112,7 +111,7 @@ export class WorkoutsController {
         }
     }
 
-    //SHOW SPECIFIC SCHEDULES ONLY    
+    //SHOW SPECIFIC SCHEDULES ONLY   
     @Get('/:schedule')
     @ApiOperation({ summary: 'Show workouts from the selected schedule' })
     @ApiResponse({
