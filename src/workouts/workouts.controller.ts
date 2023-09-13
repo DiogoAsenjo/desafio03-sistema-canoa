@@ -18,8 +18,7 @@ import {
 interface CustomRequest extends Request {
     user: any;
   }
-
-@ApiBearerAuth()  
+ 
 @ApiTags('Workouts')  
 @Controller('workouts')
 export class WorkoutsController {
@@ -28,6 +27,7 @@ export class WorkoutsController {
     ) {}
 
     //CREATE WORKOUT
+    @ApiBearerAuth() 
     @UseGuards(AuthGuard)
     @Post()
     @ApiOperation({ summary: 'Create a new workout' })
@@ -58,6 +58,14 @@ export class WorkoutsController {
     
     //SHOW SPECIFIC SCHEDULES ONLY    
     @Get('/:schedule')
+    @ApiOperation({ summary: 'Show workouts from the selected schedule' })
+    @ApiResponse({
+        status: 200,
+        description: 'Return all workouts from a specific schedule in the system',
+    })
+    @ApiBadRequestResponse({
+        description: 'Return a message saying if something wrong happened while showing the schedule selected workouts',
+    })
     async getWorkoutBySchedule(
         @Param('schedule') schedule: string, 
         @Res() res: Response
@@ -76,12 +84,13 @@ export class WorkoutsController {
     }
 
     //SHOW USER WORKOUTS
+    @ApiBearerAuth() 
     @UseGuards(AuthGuard)
     @Get('user')
     @ApiOperation({ summary: 'Show user workouts' })
     @ApiResponse({
         status: 200,
-        description: 'Return all workouts that the user registereds in the system',
+        description: 'Return all workouts that the user registered in the system',
     })
     @ApiBadRequestResponse({
         description: 'Return a message saying if something wrong happened while showing user workouts',
@@ -89,7 +98,7 @@ export class WorkoutsController {
     @ApiUnauthorizedResponse({
         description: 'Return a message saying if the user is not authorized',
     })
-    
+
     async showUserWorkouts(
         @Res() res: Response, 
         @Req() request: CustomRequest
@@ -110,7 +119,6 @@ export class WorkoutsController {
     }
 
     //SHOW ALL WORKOUTS
-    @UseGuards(AuthGuard)
     @Get('all')
     @ApiOperation({ summary: 'Show all workouts' })
     @ApiResponse({
@@ -119,9 +127,6 @@ export class WorkoutsController {
     })
     @ApiBadRequestResponse({
         description: 'Return a message saying if something wrong happened while showing all workouts',
-    })
-    @ApiUnauthorizedResponse({
-        description: 'Return a message saying if the user is not authorized',
     })
     async showAllWorkouts(@Res() res: Response): Promise<void> {
         try {
@@ -134,6 +139,7 @@ export class WorkoutsController {
     }
 
      //DELETE A WORKOUT
+     @ApiBearerAuth() 
      @UseGuards(AuthGuard)
      @Delete('/:id')
      @ApiOperation({ summary: 'Delete a workout' })
@@ -157,6 +163,7 @@ export class WorkoutsController {
      }
 
     //MODIFY A WORKOUT
+    @ApiBearerAuth() 
     @UseGuards(AuthGuard)
     @Put('modify/:id')
     @ApiOperation({ summary: 'Modify a workout' })
