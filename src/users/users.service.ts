@@ -26,7 +26,7 @@ export class UsersService {
 
         await User.create({...newUser});
         return {
-          message: 'Student registered sucessfully!',
+          message: 'User registered sucessfully!',
           newUser: newUser
         };
     }
