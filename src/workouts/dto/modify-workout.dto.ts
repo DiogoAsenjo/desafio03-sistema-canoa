@@ -12,7 +12,7 @@ export class ModifyWorkoutDto {
   @IsNotEmpty({ message: 'Schedule field is mandatory' })
   //@IsString({ message: 'Schedule should be in this format: XXhXX, "Trip" or "Other"' })
   @IsEnum(scheduleClass, { message: 'Schedule should be in this format: XXhXX, "Trip" or "Other' })
-  schedule: string;
+  schedule: scheduleClass;
 
   @ApiProperty({ description: 'Time spent on the workout (in the format: HH:MM:SS)', example: '01:04:32' })
   @IsNotEmpty({ message: 'Time spent field is mandatory' })
