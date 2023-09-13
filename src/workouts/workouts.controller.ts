@@ -1,5 +1,5 @@
-import { Body, Controller, Delete, Get, HttpStatus, Param, Post, Put, Res, UseGuards } from '@nestjs/common';
-import { Response } from 'express';
+import { Body, Controller, Delete, Get, HttpStatus, Param, Post, Put, Req, Res, UseGuards } from '@nestjs/common';
+import { Response, Request } from 'express';
 import { CreateWorkoutDto } from './dto/create-workout.dto';
 import { Workout } from './workout.entity';
 import { WorkoutsService } from './workouts.service';
@@ -14,13 +14,18 @@ import {
     ApiUnauthorizedResponse,
   } from '@nestjs/swagger';
 
-@ApiBearerAuth()  
+  //Interface created to be able to pick user id from JWT.
+  interface CustomRequest extends Request {
+    user: any;
+  }
+
 @ApiTags('Workouts')  
 @Controller('workouts')
 export class WorkoutsController {
     constructor(private readonly workoutsService: WorkoutsService) {}
 
     //CREATE WORKOUT
+    @ApiBearerAuth()
     @UseGuards(AuthGuard)
     @Post()
     @ApiOperation({ summary: 'Create a new workout' })
@@ -35,8 +40,14 @@ export class WorkoutsController {
         description: 'Return a message saying if the user is not authorized',
     })
     
-    async createWorkout(@Res() res: Response, @Body() workoutData: CreateWorkoutDto): Promise<void> {
-        const newWorkout = await Workout.create({...workoutData});
+    async createWorkout(
+        @Res() res: Response, 
+        @Body() workoutData: CreateWorkoutDto,
+        @Req() request: CustomRequest
+    ): Promise<void> {
+        const userPayload = request.user;
+        const userId = userPayload.sub;
+        const newWorkout = await Workout.create({...workoutData, userId: userId});
             res.status(HttpStatus.OK).send({
                 message: "Workout created succesfully!",
                 workout: newWorkout
@@ -44,7 +55,6 @@ export class WorkoutsController {
         }
 
     //SHOW ALL WORKOUTS
-    @UseGuards(AuthGuard)
     @Get('all')
     @ApiOperation({ summary: 'Show all workouts' })
     @ApiResponse({
@@ -54,9 +64,7 @@ export class WorkoutsController {
     @ApiBadRequestResponse({
         description: 'Return a message saying if something wrong happened while showing all workouts',
     })
-    @ApiUnauthorizedResponse({
-        description: 'Return a message saying if the user is not authorized',
-    })
+
     async showAllWorkouts(@Res() res: Response): Promise<void> {
         try {
             const workouts = await Workout.findAll();
@@ -67,7 +75,71 @@ export class WorkoutsController {
         }
     }
 
+    //SHOW USER WORKOUTS
+    @ApiBearerAuth()
+    @UseGuards(AuthGuard)
+    @Get('user')
+    @ApiOperation({ summary: 'Show user workouts' })
+    @ApiResponse({
+        status: 200,
+        description: 'Return all workouts that the user registered in the system',
+    })
+    @ApiBadRequestResponse({
+        description: 'Return a message saying if something wrong happened while showing user workouts',
+    })
+    @ApiUnauthorizedResponse({
+        description: 'Return a message saying if the user is not authorized',
+    })
+
+    async showUserWorkouts(
+        @Res() res: Response, 
+        @Req() request: CustomRequest
+    ): Promise<void> {
+        try {
+            const userPayload = request.user;
+            const userId = userPayload.sub;
+            const userWorkouts = await Workout.findAll({
+                where: {
+                    userId: userId
+                }
+            });
+            res.status(HttpStatus.OK).send(userWorkouts);
+        } catch(error) {
+            console.log(error);
+            res.status(HttpStatus.INTERNAL_SERVER_ERROR).send(error);
+        }
+    }
+
+    //SHOW SPECIFIC SCHEDULES ONLY   
+    @Get('/:schedule')
+    @ApiOperation({ summary: 'Show workouts from the selected schedule' })
+    @ApiResponse({
+        status: 200,
+        description: 'Return all workouts from a specific schedule in the system',
+    })
+    @ApiBadRequestResponse({
+        description: 'Return a message saying if something wrong happened while showing the schedule selected workouts',
+    })
+
+    async getWorkoutBySchedule(
+        @Param('schedule') schedule: string, 
+        @Res() res: Response
+    ): Promise<void> {
+        try {
+            const userWorkouts = await Workout.findAll({
+                where: {
+                    schedule: schedule
+                }
+            });
+            res.status(HttpStatus.OK).send(userWorkouts);
+        } catch(error) {
+            console.log(error);
+            res.status(HttpStatus.INTERNAL_SERVER_ERROR).send(error);
+        }
+    }
+
      //DELETE A WORKOUT
+     @ApiBearerAuth()
      @UseGuards(AuthGuard)
      @Delete('/:id')
      @ApiOperation({ summary: 'Delete a workout' })
@@ -91,6 +163,7 @@ export class WorkoutsController {
      }
 
     //MODIFY A WORKOUT
+    @ApiBearerAuth()
     @UseGuards(AuthGuard)
     @Put('modify/:id')
     @ApiOperation({ summary: 'Modify a workout' })
