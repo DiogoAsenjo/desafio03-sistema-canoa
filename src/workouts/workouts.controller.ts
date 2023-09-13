@@ -1,5 +1,5 @@
-import { Body, Controller, Delete, Get, HttpStatus, Param, Post, Put, Res, UseGuards } from '@nestjs/common';
-import { Response } from 'express';
+import { Body, Controller, Delete, Get, HttpStatus, Param, Post, Put, Req, Res, UseGuards } from '@nestjs/common';
+import { Response, Request } from 'express';
 import { CreateWorkoutDto } from './dto/create-workout.dto';
 import { Workout } from './workout.entity';
 import { WorkoutsService } from './workouts.service';
@@ -13,6 +13,10 @@ import {
     ApiTags,
     ApiUnauthorizedResponse,
   } from '@nestjs/swagger';
+
+  interface CustomRequest extends Request {
+    user: any; // Defina o tipo de 'user' de acordo com o que você espera no payload do token JWT
+  }
 
 @ApiBearerAuth()  
 @ApiTags('Workouts')  
@@ -35,8 +39,14 @@ export class WorkoutsController {
         description: 'Return a message saying if the user is not authorized',
     })
     
-    async createWorkout(@Res() res: Response, @Body() workoutData: CreateWorkoutDto): Promise<void> {
-        const newWorkout = await Workout.create({...workoutData});
+    async createWorkout(
+        @Res() res: Response, 
+        @Body() workoutData: CreateWorkoutDto,
+        @Req() request: CustomRequest
+    ): Promise<void> {
+        const userPayload = request.user;
+        const userId = userPayload.sub;
+        const newWorkout = await Workout.create({...workoutData, userId: userId});
             res.status(HttpStatus.OK).send({
                 message: "Workout created succesfully!",
                 workout: newWorkout
