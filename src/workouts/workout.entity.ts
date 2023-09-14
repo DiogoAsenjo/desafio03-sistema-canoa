@@ -1,4 +1,4 @@
-import { Table, Column, Model, DataType, ForeignKey } from 'sequelize-typescript';
+import { Table, Column, Model, DataType, ForeignKey, BelongsTo } from 'sequelize-typescript';
 import { User } from 'src/users/user.entity';
 
 export enum scheduleClass {
@@ -37,6 +37,9 @@ export class Workout extends Model {
   })
   userId: number;
   
+  @BelongsTo(() => User)
+  user: User;
+
   @Column({
     type: DataType.DATEONLY,
     allowNull: false,

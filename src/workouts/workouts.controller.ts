@@ -13,6 +13,7 @@ import {
     ApiTags,
     ApiUnauthorizedResponse,
   } from '@nestjs/swagger';
+import { User } from 'src/users/user.entity';
 
   //Interface created to be able to pick user id from JWT.
   interface CustomRequest extends Request {
@@ -67,7 +68,9 @@ export class WorkoutsController {
 
     async showAllWorkouts(@Res() res: Response): Promise<void> {
         try {
-            const workouts = await Workout.findAll();
+            const workouts = await Workout.findAll({
+                include: User,
+            });
             res.status(HttpStatus.OK).send(workouts);
         } catch(error) {
             console.log(error);
