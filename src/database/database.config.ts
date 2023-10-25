@@ -19,6 +19,7 @@ export const databaseProviders = [
           //Necessário para usar o servidor Postgre no Azure
           ssl: {
             require: true,
+            rejectUnauthorized: false,
           },
         },
       });
