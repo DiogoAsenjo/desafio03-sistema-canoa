@@ -36,3 +36,8 @@ lerna-debug.log*
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
+
+# Docker
+.dockerignore
+docker-compose.yaml
+Dockerfile
