@@ -4,34 +4,44 @@ import { ModifyWorkoutDto } from './dto/modify-workout.dto';
 
 @Injectable()
 export class WorkoutsService {
+  async deleteWorkout(idWorkout: number): Promise<Record<string, any>> {
+    const idExistent = await Workout.findByPk(idWorkout);
 
-    async deleteWorkout(idWorkout: number): Promise<Object> {
-        const idExistent = await Workout.findByPk(idWorkout);
-        
-        if(!idExistent) throw new HttpException("There's no Workout with this id. To see all visit: workouts/all", 400);
+    if (!idExistent)
+      throw new HttpException(
+        "There's no Workout with this id. To see all visit: workouts/all",
+        400,
+      );
 
-        await idExistent.destroy();
-        return {
-            message: 'Workout deleted sucessfully!',
-        };
-    }
+    await idExistent.destroy();
+    return {
+      message: 'Workout deleted sucessfully!',
+    };
+  }
 
-    async modifyWorkout(workoutId: number, workout: ModifyWorkoutDto): Promise<Object> {
-        const idExistent = await Workout.findByPk(workoutId);
-        
-        if(!idExistent) throw new HttpException("There's no Workout with this id. To see all visit: workouts/all", 400);
+  async modifyWorkout(
+    workoutId: number,
+    workout: ModifyWorkoutDto,
+  ): Promise<Record<string, any>> {
+    const idExistent = await Workout.findByPk(workoutId);
 
-        idExistent.date = workout.date;
-        idExistent.schedule = workout.schedule;
-        idExistent.timeSpent = workout.timeSpent;
-        idExistent.distance = workout.distance;
-        idExistent.maxSpeed = workout.maxSpeed;
-        idExistent.averageSpeed = workout.averageSpeed;
-        await idExistent.save();
+    if (!idExistent)
+      throw new HttpException(
+        "There's no Workout with this id. To see all visit: workouts/all",
+        400,
+      );
 
-        return {
-            message: "Workout modified with success!",
-            workoutModified: workout
-        };
-    }
+    idExistent.date = workout.date;
+    idExistent.schedule = workout.schedule;
+    idExistent.timeSpent = workout.timeSpent;
+    idExistent.distance = workout.distance;
+    idExistent.maxSpeed = workout.maxSpeed;
+    idExistent.averageSpeed = workout.averageSpeed;
+    await idExistent.save();
+
+    return {
+      message: 'Workout modified with success!',
+      workoutModified: workout,
+    };
+  }
 }

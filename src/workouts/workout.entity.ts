@@ -1,4 +1,11 @@
-import { Table, Column, Model, DataType, ForeignKey, BelongsTo } from 'sequelize-typescript';
+import {
+  Table,
+  Column,
+  Model,
+  DataType,
+  ForeignKey,
+  BelongsTo,
+} from 'sequelize-typescript';
 import { User } from 'src/users/user.entity';
 
 export enum scheduleClass {
@@ -27,7 +34,7 @@ export class Workout extends Model {
     allowNull: false,
     primaryKey: true,
     autoIncrement: true,
-    })
+  })
   id: number;
 
   @ForeignKey(() => User)
@@ -36,7 +43,7 @@ export class Workout extends Model {
     allowNull: false,
   })
   userId: number;
-  
+
   @BelongsTo(() => User)
   user: User;
 

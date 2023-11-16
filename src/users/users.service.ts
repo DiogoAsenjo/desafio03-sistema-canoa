@@ -7,49 +7,62 @@ import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class UsersService {
-  constructor(
-    private jwtService: JwtService
-  ) {}
+  constructor(private jwtService: JwtService) {}
 
-    async createAccount(newUser: CreateUserDto): Promise<Object> {
-        const alreadyRegistered = await User.findOne({
-            where: {
-              email: newUser.email,
-            },
-          });
-        
-        //Não é o service que deve fazer esse tipo de validação. Se possível seria bom criar um Decorator para validade se o usuário existe ou não e deixar tudo no DTO.
-        if(alreadyRegistered) throw new HttpException("User already exist, you should use another e-mail", 400);
+  async createAccount(newUser: CreateUserDto): Promise<Record<string, any>> {
+    const alreadyRegistered = await User.findOne({
+      where: {
+        email: newUser.email,
+      },
+    });
 
-        const hashedPassword = await bcrypt.hash(newUser.password, Number(process.env.SALTORROUNDS));
-        newUser.password = hashedPassword;
+    //Não é o service que deve fazer esse tipo de validação. Se possível seria bom criar um Decorator para validade se o usuário existe ou não e deixar tudo no DTO.
+    if (alreadyRegistered)
+      throw new HttpException(
+        'User already exist, you should use another e-mail',
+        400,
+      );
 
-        await User.create({...newUser});
-        return {
-          message: 'User registered sucessfully!',
-          newUser: newUser
-        };
-    }
+    const hashedPassword = await bcrypt.hash(
+      newUser.password,
+      Number(process.env.SALTORROUNDS),
+    );
+    newUser.password = hashedPassword;
 
-    async login(loginData: LoginDto): Promise<Object> {
-      const userExists = await User.findOne({
-        where: {
-          email: loginData.email,
-        },
-      });
+    await User.create({ ...newUser });
+    return {
+      message: 'User registered sucessfully!',
+      newUser: newUser,
+    };
+  }
 
-      if(!userExists) throw new HttpException("User doesn't exist, check your credentials", 400);
-      
-      const validPassword = await bcrypt.compare(loginData.password, userExists.password);
+  async login(loginData: LoginDto): Promise<Record<string, any>> {
+    const userExists = await User.findOne({
+      where: {
+        email: loginData.email,
+      },
+    });
 
-      if(!validPassword) throw new HttpException("Invalid password, try again!", 400);
+    if (!userExists)
+      throw new HttpException(
+        "User doesn't exist, check your credentials",
+        400,
+      );
 
-      const payload = { sub: userExists.id, username: userExists.email }
+    const validPassword = await bcrypt.compare(
+      loginData.password,
+      userExists.password,
+    );
 
-      return {
-        message: "Logged in succesfully!",
-        user: userExists,
-        access_token: await this.jwtService.signAsync(payload),
-      }
-    }
+    if (!validPassword)
+      throw new HttpException('Invalid password, try again!', 400);
+
+    const payload = { sub: userExists.id, username: userExists.email };
+
+    return {
+      message: 'Logged in succesfully!',
+      user: userExists,
+      access_token: await this.jwtService.signAsync(payload),
+    };
+  }
 }
